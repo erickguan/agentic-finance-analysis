@@ -1,7 +1,7 @@
 [project]
-name = "agentic-finance-analysis"
+name = "agent-fin"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-Powered Financial Analysis Platform with multi-agent system"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -14,7 +14,6 @@ dependencies = [
     "selenium>=4.15.0",
     "pandas>=2.1.0",
     "numpy>=1.24.0",
-    "python-dotenv>=1.0.0",
     "yfinance>=0.2.18",
     "alpha-vantage>=2.3.1",
     "pydantic>=2.5.0",
@@ -24,6 +23,8 @@ dependencies = [
     "plotly>=5.17.0",
     "langchain-community>=0.3.0",
     "ta-lib>=0.4.25",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
 ]
 
 [dependency-groups]

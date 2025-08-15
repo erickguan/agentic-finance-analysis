@@ -1,5 +1,111 @@
 [tools]
 python = "3.13"
+node = "20"
 
 [env]
 _.file = '.env'
+
+[settings]
+python.uv_venv_auto = true
+
+[tasks.install-backend]
+description = "Install Python backend dependencies"
+run = "uv sync"
+
+[tasks.install-frontend]
+description = "Install React frontend dependencies"  
+run = "cd agent_fin/frontend && npm install"
+
+[tasks.install]
+description = "Install all dependencies (backend + frontend)"
+depends = ["install-backend", "install-frontend"]
+
+[tasks.api]
+description = "Start FastAPI development server"
+run = "cd agent_fin/api && uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+depends = ["install-backend"]
+
+[tasks.frontend]
+description = "Start React development server"
+run = "cd agent_fin/frontend && npm start"
+depends = ["install-frontend"]
+
+[tasks.dev]
+description = "Start both API and frontend in development mode"
+run = [
+  "mise run api &",
+  "sleep 2", 
+  "mise run frontend"
+]
+
+[tasks.build-frontend]
+description = "Build React frontend for production"
+run = "cd agent_fin/frontend && npm run build"
+depends = ["install-frontend"]
+
+[tasks.build]
+description = "Build entire application"
+depends = ["build-frontend"]
+
+[tasks.test-backend]
+description = "Run backend tests"
+run = "python -m pytest tests/ -v"
+
+[tasks.test-frontend] 
+description = "Run frontend tests"
+run = "cd agent_fin/frontend && npm test -- --watchAll=false"
+
+[tasks.test]
+description = "Run all tests"
+depends = ["test-backend", "test-frontend"]
+
+[tasks.lint-backend]
+description = "Lint Python backend code"
+run = "ruff check agent_fin/"
+
+[tasks.lint-frontend]
+description = "Lint React frontend code" 
+run = "cd agent_fin/frontend && npm run lint"
+
+[tasks.lint]
+description = "Lint all code"
+depends = ["lint-backend", "lint-frontend"]
+
+[tasks.format-backend]
+description = "Format Python backend code"
+run = "ruff format agent_fin/"
+
+[tasks.format-frontend]
+description = "Format React frontend code"
+run = "cd agent_fin/frontend && npm run format"
+
+[tasks.format]
+description = "Format all code"
+depends = ["format-backend", "format-frontend"]
+
+[tasks.clean]
+description = "Clean build artifacts and dependencies"
+run = [
+  "rm -rf agent_fin/frontend/node_modules",
+  "rm -rf agent_fin/frontend/build", 
+  "rm -rf .venv",
+  "rm -rf __pycache__",
+  "find . -name '*.pyc' -delete"
+]
+
+[tasks.start-api-prod]
+description = "Start API server in production mode"
+run = "cd agent_fin/api && uvicorn main:app --host 0.0.0.0 --port 8000"
+
+[tasks.serve-frontend-prod]
+description = "Serve built frontend files"
+run = "cd agent_fin/frontend && npx serve -s build -l 3000"
+
+[tasks.prod]
+description = "Start application in production mode"  
+run = [
+  "mise run start-api-prod &",
+  "sleep 2",
+  "mise run serve-frontend-prod"
+]
+depends = ["build"]
