@@ -1,0 +1,37 @@
+[project]
+name = "agentic-finance-analysis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=0.3.27",
+    "langchain-openai>=0.3.28",
+    "langgraph>=0.6.3",
+    "faiss-cpu>=1.7.4",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "selenium>=4.15.0",
+    "pandas>=2.1.0",
+    "numpy>=1.24.0",
+    "python-dotenv>=1.0.0",
+    "yfinance>=0.2.18",
+    "alpha-vantage>=2.3.1",
+    "pydantic>=2.5.0",
+    "aiohttp>=3.9.0",
+    "lxml>=4.9.0",
+    "streamlit>=1.28.0",
+    "plotly>=5.17.0",
+    "langchain-community>=0.3.0",
+    "ta-lib>=0.4.25",
+]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.4.0",
+    "ipywidgets>=8.1.7",
+    "jupyterlab>=4.4.5",
+    "matplotlib>=3.10.5",
+    "pillow>=11.3.0",
+    "pyqt5>=5.15.11",
+]
