@@ -109,7 +109,7 @@ async def start_analysis(request: AnalysisRequest, background_tasks: BackgroundT
         analysis_id = f"analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{hash(request.query) % 10000}"
         
         # Initialize analysis record
-        analysis_cache[analysis_id] = {
+        analysis = analysis_cache[analysis_id] = {
             "status": "processing",
             "query": request.query,
             "depth": request.depth,
@@ -124,6 +124,7 @@ async def start_analysis(request: AnalysisRequest, background_tasks: BackgroundT
         return AnalysisResponse(
             analysis_id=analysis_id,
             status="processing",
+            user_query=analysis.get("query"),
             timestamp=datetime.now()
         )
         

@@ -15,8 +15,8 @@ from typing import Dict, Any
 src_path = Path(__file__).parent / "src"
 sys.path.insert(0, str(src_path))
 
-from agents.master_agent import master_agent
-from utils.config import config
+from agent_fin.core.agents.master_agent import master_agent
+from agent_fin.core.utils.config import config
 
 def main():
     """Main CLI function."""
