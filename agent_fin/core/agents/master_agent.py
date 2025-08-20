@@ -284,7 +284,11 @@ Remember: You are coordinating other agents but also providing the final synthes
             }
     
     def _extract_symbol_from_query(self, query: str) -> Optional[str]:
-        """Extract stock symbol from user query."""
+        """Extract stock symbol from user query.
+
+        Work with tickers.        
+        Improve with NER to extract company with mapping.
+        """
         import re
         
         query_upper = query.upper()
@@ -543,7 +547,9 @@ Include key findings, recommendations, and any important disclaimers."""
             "master_agent": "ready",
             "research_agent": "ready" if self.research_agent else "unavailable",
             "analysis_agent": "ready" if self.analysis_agent else "unavailable",
-            "orchestration_tools": len(self.tools)
+            "meta": {
+                "orchestration_tools": len(self.tools)
+            }
         }
 
 # Global instance

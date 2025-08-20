@@ -74,31 +74,76 @@
   @apply bg-white rounded-lg shadow-md p-6;
 }
 
-/* Typography */
-.prose {
+/* Typography - Compact markdown styles */
+.prose-compact {
   @apply text-gray-700 leading-relaxed;
 }
 
-.prose h1 {
-  @apply text-2xl font-bold text-gray-900 mb-4;
+.prose-compact h1 {
+  @apply text-2xl font-bold text-gray-900 mb-2;
 }
 
-.prose h2 {
-  @apply text-xl font-semibold text-gray-900 mb-3;
+.prose-compact h2 {
+  @apply text-xl font-semibold text-gray-900 mb-2;
 }
 
-.prose h3 {
-  @apply text-lg font-medium text-gray-900 mb-2;
+.prose-compact h3 {
+  @apply text-lg font-medium text-gray-900 mb-1;
 }
 
-.prose p {
-  @apply mb-4;
+.prose-compact p {
+  @apply mb-2;
 }
 
-.prose ul {
-  @apply list-disc list-inside mb-4;
+.prose-compact ul {
+  @apply list-none mb-2 space-y-1;
 }
 
-.prose li {
-  @apply mb-1;
+.prose-compact li {
+  @apply mb-0;
+}
+
+.prose-compact li::before {
+  content: "• ";
+  @apply text-gray-500 mr-2;
+}
+
+/* Nested lists with indentation */
+.prose-compact ul ul {
+  @apply ml-4 mt-1 mb-1;
+}
+
+.prose-compact ul ul li::before {
+  content: "◦ ";
+  @apply text-gray-400;
+}
+
+/* Style for list items containing colons as section headers */
+.prose-compact li strong {
+  @apply font-semibold text-gray-900;
+}
+
+/* Keep bullets for all list items but handle nesting properly */
+.prose-compact li {
+  @apply relative;
+}
+
+.prose-compact ol {
+  @apply mb-2 space-y-1;
+  counter-reset: item;
+}
+
+.prose-compact ol li {
+  @apply mb-0;
+  counter-increment: item;
+}
+
+.prose-compact ol li::before {
+  content: counter(item) ". ";
+  @apply text-gray-500 mr-2;
+}
+
+/* Nested ordered lists */
+.prose-compact ol ol {
+  @apply ml-4 mt-1 mb-1;
 }

@@ -20,6 +20,7 @@ export interface AnalysisResponse {
   status: string;
   symbol?: string;
   results?: any;
+  user_query: string;
   error?: string;
   timestamp: string;
 }

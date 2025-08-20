@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import { 
   ArrowLeftIcon, 
   ArrowPathIcon,
@@ -20,7 +21,7 @@ const AnalysisDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
 
-  const loadAnalysis = async () => {
+  const loadAnalysis = useCallback(async () => {
     if (!analysisId) return;
     
     try {
@@ -33,7 +34,7 @@ const AnalysisDetail: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [analysisId]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -143,7 +144,7 @@ const AnalysisDetail: React.FC = () => {
                 Analysis: {analysis.symbol || 'Processing...'}
               </h1>
             </div>
-            <p className="text-gray-600 mb-2">"{analysis.results?.user_query || 'Unknown query'}"</p>
+            <p className="text-gray-600 mb-2">"{analysis.user_query || 'Unknown query'}"</p>
             <div className="flex items-center space-x-4 text-sm text-gray-500">
               <span>Status: <span className="font-medium">{analysis.status}</span></span>
               <span>Updated: {formatTimestamp(analysis.timestamp)}</span>
@@ -169,7 +170,11 @@ const AnalysisDetail: React.FC = () => {
         {analysis.results?.final_response && (
           <div className="bg-blue-50 border border-blue-200 rounded p-4">
             <h3 className="font-medium text-blue-800 mb-2">Executive Summary</h3>
-            <p className="text-blue-700">{analysis.results.final_response}</p>
+            <div className="text-blue-700 prose-compact max-w-none">
+              <ReactMarkdown>
+                {analysis.results.final_response}
+              </ReactMarkdown>
+            </div>
           </div>
         )}
       </div>
@@ -244,7 +249,11 @@ const OverviewTab: React.FC<{ results: any }> = ({ results }) => (
       <div>
         <h3 className="text-lg font-semibold mb-4">Research Summary</h3>
         <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="text-blue-900">{results.research_results.research_findings}</p>
+          <div className="text-blue-900 prose-compact max-w-none">
+            <ReactMarkdown>
+              {results.research_results.research_findings}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     )}
@@ -253,7 +262,11 @@ const OverviewTab: React.FC<{ results: any }> = ({ results }) => (
       <div>
         <h3 className="text-lg font-semibold mb-4">Analysis Summary</h3>
         <div className="bg-green-50 p-4 rounded-lg">
-          <p className="text-green-900">{results.analysis_results.analysis_findings}</p>
+          <div className="text-green-900 prose-compact max-w-none">
+            <ReactMarkdown>
+              {results.analysis_results.analysis_findings}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     )}
@@ -270,8 +283,8 @@ const ResearchTab: React.FC<{ research: any }> = ({ research }) => {
       {research.research_findings && (
         <div>
           <h3 className="text-lg font-semibold mb-4">Research Findings</h3>
-          <div className="prose max-w-none">
-            <p>{research.research_findings}</p>
+          <div className="prose-compact max-w-none">
+            <ReactMarkdown>{research.research_findings}</ReactMarkdown>
           </div>
         </div>
       )}
@@ -325,8 +338,8 @@ const AnalysisTab: React.FC<{ analysisData: any }> = ({ analysisData }) => {
       {analysisData.analysis_findings && (
         <div>
           <h3 className="text-lg font-semibold mb-4">Analysis Findings</h3>
-          <div className="prose max-w-none">
-            <p>{analysisData.analysis_findings}</p>
+          <div className="prose-compact max-w-none">
+            <ReactMarkdown>{analysisData.analysis_findings}</ReactMarkdown>
           </div>
         </div>
       )}

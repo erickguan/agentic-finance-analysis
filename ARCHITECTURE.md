@@ -273,58 +273,6 @@ ORCHESTRATION_TOOLS = [
 ]
 ```
 
-## Streamlit Dashboard Design
-
-### Dashboard Components
-
-1. **Query Interface**
-   - Natural language query input
-   - Stock symbol selector with autocomplete
-   - Analysis type selection (technical/fundamental/sentiment/comprehensive)
-   - Time horizon selector
-
-2. **Analysis Results Display**
-   - Executive summary card
-   - Multi-tab interface for different analysis types
-   - Interactive charts and visualizations
-   - Risk metrics dashboard
-
-3. **Data Visualization**
-   - Price charts with technical indicators
-   - Financial metrics comparison charts
-   - Sentiment timeline
-   - News impact visualization
-
-4. **Export and Sharing**
-   - PDF report generation
-   - Analysis result export
-   - Shareable analysis links
-
-### Dashboard Layout
-
-```python
-# Streamlit app structure
-def main():
-    st.set_page_config(page_title="Financial Analysis AI", layout="wide")
-    
-    # Sidebar for inputs
-    with st.sidebar:
-        query_interface()
-        analysis_settings()
-    
-    # Main content area
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        analysis_results()
-        interactive_charts()
-    
-    with col2:
-        key_metrics_summary()
-        risk_assessment()
-        news_feed()
-```
-
 ## Data Flow Architecture
 
 ### Query Processing Flow

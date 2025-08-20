@@ -21,7 +21,7 @@ from agent_fin.core.agents.master_agent import master_agent
 from agent_fin.core.utils.config import config
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
@@ -52,12 +52,14 @@ class AnalysisResponse(BaseModel):
     status: str
     symbol: Optional[str] = None
     results: Optional[Dict[str, Any]] = None
+    user_query: str
     error: Optional[str] = None
     timestamp: datetime
 
 class StatusResponse(BaseModel):
     status: str
     agents: Dict[str, str]
+    meta: Dict[str, Any]
     config: Dict[str, Any]
 
 @app.get("/")
@@ -84,10 +86,12 @@ async def get_status():
     """Get system status and agent information."""
     try:
         agent_status = master_agent.get_status()
+        meta = agent_status.pop("meta")
         
         return StatusResponse(
             status="active",
             agents=agent_status,
+            meta=meta,
             config={
                 "model": config.OPENAI_MODEL,
                 "embedding_model": config.EMBEDDING_MODEL
@@ -140,6 +144,7 @@ async def get_analysis(analysis_id: str):
         status=analysis["status"],
         symbol=analysis.get("symbol"),
         results=analysis.get("results"),
+        user_query=analysis.get("query"),
         error=analysis.get("error"),
         timestamp=analysis.get("completed_at", analysis.get("started_at", datetime.now()))
     )
@@ -174,7 +179,7 @@ async def process_analysis(analysis_id: str, request: AnalysisRequest):
         logger.info(f"Starting analysis {analysis_id} for query: {request.query}")
         
         # Process the query through master agent
-        results = master_agent.process_query_sync(request.query)
+        results = await master_agent.process_query(request.query)
         
         # Update cache with results
         analysis_cache[analysis_id].update({
